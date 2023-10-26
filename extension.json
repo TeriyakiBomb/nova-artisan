@@ -1,0 +1,36 @@
+{
+    "identifier": "teriyaki.LaravelArtisan",
+    "name": "Laravel Artisan",
+    "organization": "Teriyaki",
+    "description": "Lorem ipsum, dolor sit amet.",
+    "version": "1.0",
+    "categories": ["commands"],
+
+    "main": "main.js",
+
+    "activationEvents": [
+        "onLanguage:html"
+    ],
+
+    "entitlements": {
+        "process": true
+    },
+
+    "commands": {
+        "extensions": [
+            {
+                "title": "Run External Tool",
+                "command": "laravel-artisan.makeModel"
+            }
+        ]
+    },
+
+    "config": [
+        {
+            "key": "laravel-artisan.foobar",
+            "title": "Foo the bar",
+            "type": "boolean",
+            "default": false
+        }
+    ]
+}
