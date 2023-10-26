@@ -4,8 +4,11 @@ function runLaravelCommandWithInput(options) {
   let inputOptions = {
     placeholder: placeholder,
   };
+
+  const safeString = /^[a-zA-Z-]+$/; //Only letters and hyphens
+
   nova.workspace.showInputPalette(message, inputOptions, function (result) {
-    if (result) {
+    if (result && safeString.test(result)) {
       command += " " + result;
       executeCommand(command, successMessage);
     }
@@ -150,7 +153,7 @@ nova.commands.register("laravel-artisan.notificationsTable", (options) => {
   });
 });
 
-const makeCommand = [
+const artisanMakeCommand = [
   "make:cast",
   "make:channel",
   "make:command",
@@ -178,7 +181,7 @@ const makeCommand = [
   "make:view",
 ];
 
-makeCommand.forEach((command) => {
+artisanMakeCommand.forEach((command) => {
   const formattedCommand = command
     .split(":")
     .map((word, index) => {
