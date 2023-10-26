@@ -194,7 +194,7 @@ makeCommand.forEach((command) => {
     .toLowerCase();
 
   const message = `What should this ${strippedCommandName} be named?`;
-  const successMessage = `💎Successfully created ${strippedCommandName}`;
+  const successMessage = `💎 Successfully created ${strippedCommandName}`;
 
   nova.commands.register(`laravel-artisan.${formattedCommand}`, (options) => {
     runLaravelCommandWithInput({
