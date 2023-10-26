@@ -1,10 +1,12 @@
 {
   "identifier": "teriyaki.LaravelArtisan",
-  "name": "Laravel artisan",
+  "name": "Laravel Artisan",
   "organization": "Teriyaki",
-  "description": "Lorem ipsum, dolor sit amet.",
+  "description": "Run artisan commands from the command palette",
+  "funding": "https://ko-fi.com/ashteriyaki",
   "version": "0.1",
-  "categories": ["commands"],
+  "categories": ["commands", "Tasks"],
+  "license": "MIT",
 
   "main": "main.js",
 
