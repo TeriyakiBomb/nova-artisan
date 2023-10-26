@@ -14,6 +14,10 @@ function runLaravelCommandWithInput(options) {
     if (result && safeString.test(result)) {
       command += " " + result;
       executeCommand(command, successMessage);
+    } else {
+      console.log(
+        "🚫 Invalid input. This only accepts name and arguments, like ModelName -cf."
+      );
     }
   });
 }
