@@ -51,3 +51,7 @@ With more to come in subsequent releases
 To configure global preferences, open **Extensions → Extension Library** then select Laravel Artisan's **Preferences** tab. From here you can specify your preferred shell and enable/disable command success messages.
 
 <!-- You can also configure preferences on a per-project basis in **Project → Project Settings...** -->
+
+### Contribution and feedback
+
+I'll be adding more commands and maybe some extra functionality soon, if there's anything you'd like to see or find any bugs, feel free to open an issue on GitHub.
