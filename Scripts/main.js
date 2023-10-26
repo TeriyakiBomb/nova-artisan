@@ -1,35 +1,37 @@
-function runLaravelCommandWithInput(args, placeholder, message) {
-  let options = {
-    placeholder: placeholder
+function runLaravelCommandWithInput(options) {
+  let { message, placeholder, command, successMessage } = options;
+
+  let inputOptions = {
+    placeholder: placeholder,
+    prompt: "Run",
   };
-  nova.workspace.showInputPalette(
-    message,
-    options,
-    function (result) {
-      if (result) {
-        args += ' ' + result;
-        executeCommand(args);
-      }
+  nova.workspace.showInputPalette(message, inputOptions, function (result) {
+    if (result) {
+      command += " " + result;
+      executeCommand(command, successMessage);
     }
-  );
+  });
 }
 
-function runLaravelCommandWithoutInput(args) {
-  executeCommand(args);
+function runLaravelCommand(options) {
+  let { command, successMessage } = options;
+  executeCommand(command, successMessage);
 }
 
-function executeCommand(args) {
+function executeCommand(command, successMessage) {
+  let fullCommand = "php artisan " + command;
+
   let options = {
-    args: ['-c', 'php artisan ' + args],
+    args: ["-c", fullCommand],
     shell: true,
-    cwd: nova.workspace.path
+    cwd: nova.workspace.path,
   };
 
   let process = new Process("/bin/sh", options);
 
   process.onStdout(function (line) {
     console.log("Running " + line);
-    //console.log(nova.workspace.path);
+    console.log(nova.workspace.path);
   });
 
   process.onStderr(function (line) {
@@ -39,25 +41,30 @@ function executeCommand(args) {
   process.onDidExit(function (status) {
     console.log("Process exited with status: " + status);
 
-    if(status == 0)
-    nova.workspace.showInformativeMessage(
-          "Done"
-      );
-
-    else if (status != 0) {
-         console.error("process finished with non-zero status");
-         nova.workspace.showErrorMessage("Error: " + line);
-         return;
-     }
+    if (status == 0) {
+      nova.workspace.showInformativeMessage(successMessage);
+    } else if (status != 0) {
+      console.error("process finished with non-zero status");
+      nova.workspace.showErrorMessage("Error: " + line);
+      return;
+    }
   });
 
   process.start();
 }
 
 nova.commands.register("laravel-artisan.guy", (workspace) => {
-  runLaravelCommandWithoutInput('make:model boot');
+  runLaravelCommand({
+    command: "make:model boot",
+    successMessage: "Task completed successfully!",
+  });
 });
 
 nova.commands.register("laravel-artisan.makeModel", (workspace) => {
-  runLaravelCommandWithInput('make:model', 'Name', 'Enter a name for the model');
+  runLaravelCommandWithInput({
+    message: "Enter a name for the model",
+    placeholder: "Name",
+    command: "make:model",
+    successMessage: "Model created successfully!",
+  });
 });
