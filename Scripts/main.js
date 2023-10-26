@@ -8,7 +8,7 @@ function runLaravelCommandWithInput(options) {
     placeholder: placeholder,
   };
 
-  const safeString = /^[a-zA-Z-]+$/; //Only letters and hyphens
+  const safeString = /^[a-zA-Z]+(\s-\w+)?$/; //Only letters and hyphens
 
   nova.workspace.showInputPalette(message, inputOptions, function (result) {
     if (result && safeString.test(result)) {
