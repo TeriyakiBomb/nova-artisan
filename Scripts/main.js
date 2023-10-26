@@ -28,24 +28,30 @@ function executeCommand(command, successMessage) {
   };
 
   let process = new Process("/bin/sh", options);
+  var artisanError = false;
 
-  process.onStdout(function (line) {
-    console.log("Running " + line);
-    console.log(nova.workspace.path);
+  process.onStdout(function (data, artisanError) {
+    console.log("Running " + data);
+    if (data.includes("ERROR")) {
+      console.error("Process finished with errors");
+      nova.workspace.showErrorMessage(data.trim());
+      artisanError = true;
+      //console.log(artisanError);
+      return;
+    }
   });
 
-  process.onStderr(function (line) {
-    console.error("Error: " + line);
+  process.onStderr(function (data) {
+    console.error("Error: " + data);
   });
 
   process.onDidExit(function (status) {
     console.log("Process exited with status: " + status);
-
-    if (status == 0) {
+    console.log(artisanError);
+    if (status == 0 && !artisanError) {
       nova.workspace.showInformativeMessage(successMessage);
-    } else if (status != 0) {
-      console.error("process finished with non-zero status");
-      nova.workspace.showErrorMessage("Error: " + line);
+    } else {
+      console.error("Process finished with non-zero status");
       return;
     }
   });
@@ -55,7 +61,7 @@ function executeCommand(command, successMessage) {
 
 nova.commands.register("laravel-artisan.guy", (workspace) => {
   runLaravelCommand({
-    command: "make:model boot",
+    command: "make:model boog",
     successMessage: "Task completed successfully!",
   });
 });
