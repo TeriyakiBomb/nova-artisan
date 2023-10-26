@@ -1,14 +1,27 @@
-exports.activate = function () {
-  // Do work when the extension is activated
-};
-
-exports.deactivate = function () {
-  // Clean up state before the extension is deactivated
-};
-
-nova.commands.register("laravel-artisan.guy", (workspace) => {
+function runLaravelCommandWithInput(args, placeholder, message, prompt) {
   let options = {
-    args: ['-c', 'php artisan make:model boot'],
+    placeholder: placeholder,
+    prompt: prompt,
+  };
+  nova.workspace.showInputPalette(
+    message,
+    options,
+    function (result) {
+      if (result) {
+        args += ' ' + result;
+        executeCommand(args);
+      }
+    }
+  );
+}
+
+function runLaravelCommandWithoutInput(args) {
+  executeCommand(args);
+}
+
+function executeCommand(args) {
+  let options = {
+    args: ['-c', 'php artisan ' + args],
     shell: true,
     cwd: nova.workspace.path
   };
@@ -17,7 +30,7 @@ nova.commands.register("laravel-artisan.guy", (workspace) => {
 
   process.onStdout(function (line) {
     console.log("Running " + line);
-    console.log(nova.workspace.path)
+    //console.log(nova.workspace.path);
   });
 
   process.onStderr(function (line) {
@@ -29,42 +42,12 @@ nova.commands.register("laravel-artisan.guy", (workspace) => {
   });
 
   process.start();
+}
+
+nova.commands.register("laravel-artisan.guy", (workspace) => {
+  runLaravelCommandWithoutInput('make:model boot');
 });
 
 nova.commands.register("laravel-artisan.makeModel", (workspace) => {
-  var options = {
-    placeholder: "Name",
-    prompt: "Run",
-  };
-  nova.workspace.showInputPalette(
-    "Enter a name for the model",
-    options,
-    function (result) {
-      if (result) {
-        let options = {
-          args: ['-c', 'php artisan make:model ' + result],
-          shell: true,
-          cwd: nova.workspace.path
-        };
-
-        let process = new Process("/bin/sh", options);
-
-        process.onStdout(function (line) {
-          console.log(result);
-          console.log("Running " + line);
-          console.log(nova.workspace.path);
-        });
-
-        process.onStderr(function (line) {
-          console.error("Error: " + line);
-        });
-
-        process.onDidExit(function (status) {
-          console.log("Process exited with status: " + status);
-        });
-
-        process.start();
-      }
-    }
-  );
+  runLaravelCommandWithInput('make:model', 'Name', 'Enter a name for the model');
 });

@@ -19,8 +19,13 @@
     "commands": {
         "extensions": [
             {
-                "title": "Run External Tool",
+                "title": "Artisan - Model",
                 "command": "laravel-artisan.makeModel"
+            },
+            {
+                "title": "guy",
+                "command": "laravel-artisan.guy"
+
             }
         ]
     },
