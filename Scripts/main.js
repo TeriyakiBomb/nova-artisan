@@ -1,3 +1,6 @@
+var SHELL_PATH_KEY = "laravel-artisan.shell.path";
+var SILENCE_NOTIFICATIONS = "laravel-artisan.silence.notifications";
+
 function runLaravelCommandWithInput(options) {
   let { message, placeholder, command, successMessage } = options;
 
@@ -28,8 +31,8 @@ function executeCommand(command, successMessage) {
     shell: true,
     cwd: nova.workspace.path,
   };
-
-  let process = new Process("/bin/sh", options);
+  var shell = nova.config.get(SHELL_PATH_KEY);
+  let process = new Process(shell, options);
   var artisanError = false;
 
   process.onStdout(function (data) {
@@ -50,10 +53,11 @@ function executeCommand(command, successMessage) {
   process.onDidExit(function (status) {
     console.log("Process exited with status: " + status);
     console.log(artisanError);
-    if (status == 0 && !artisanError) {
+    var notificationsOn = nova.config.get(SILENCE_NOTIFICATIONS);
+    if (status == 0 && !artisanError && notificationsOn) {
       nova.workspace.showInformativeMessage(successMessage);
     } else {
-      console.error("Process finished with non-zero status");
+      console.error("Process finished with non-zero status - " + status);
       return;
     }
   });

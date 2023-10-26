@@ -175,16 +175,24 @@
       {
         "title": "Create view",
         "command": "laravel-artisan.makeView"
-      }
+      },
+      { "separator": true }
     ]
   },
 
   "config": [
     {
-      "key": "laravel-artisan.foobar",
+      "key": "laravel-artisan.silence.notifications",
       "title": "Foo the bar",
       "type": "boolean",
-      "default": false
+      "default": true
+    },
+    {
+      "key": "laravel-artisan.shell.path",
+      "title": "Shell",
+      "description": "Full path to your preferred shell",
+      "type": "string",
+      "default": "/bin/sh"
     }
   ]
 }
