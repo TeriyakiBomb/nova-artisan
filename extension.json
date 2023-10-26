@@ -183,9 +183,10 @@
   "config": [
     {
       "key": "laravel-artisan.silence.notifications",
-      "title": "Foo the bar",
+      "title": "Mute success messages",
+      "description": "Not recommended, but you do you.",
       "type": "boolean",
-      "default": true
+      "default": false
     },
     {
       "key": "laravel-artisan.shell.path",
