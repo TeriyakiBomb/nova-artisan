@@ -1,6 +1,6 @@
 {
   "identifier": "teriyaki.LaravelArtisan",
-  "name": "Laravel Artisan",
+  "name": "Laravel artisan",
   "organization": "Teriyaki",
   "description": "Lorem ipsum, dolor sit amet.",
   "version": "0.1",
@@ -34,17 +34,10 @@
         "command": "laravel-artisan.cacheForget"
       },
       {
-        "title": "Clear config",
+        "title": "Forget cahce",
         "command": "laravel-artisan.cacheForget"
       },
-      {
-        "title": "Clear config",
-        "command": "laravel-artisan.cacheForget"
-      },
-      {
-        "title": "Make model",
-        "command": "laravel-artisan.makeModel"
-      },
+      { "separator": true },
       {
         "title": "Seed database",
         "command": "laravel-artisan.dbSeed"
@@ -60,6 +53,128 @@
       {
         "title": "Migrate fresh",
         "command": "laravel-artisan.migrateFresh"
+      },
+      {
+        "title": "Migrate refresh",
+        "command": "laravel-artisan.migrateRefresh"
+      },
+      {
+        "title": "Migrate reset",
+        "command": "laravel-artisan.migrateReset"
+      },
+      {
+        "title": "Migrate rollback",
+        "command": "laravel-artisan.migrateRollback"
+      },
+      { "separator": true },
+      {
+        "title": "Prune models",
+        "command": "laravel-artisan.modelPrune"
+      },
+      {
+        "title": "Create notifications migration",
+        "command": "laravel-artisan.notificationsTable"
+      },
+
+      {
+        "title": "Create cast",
+        "command": "laravel-artisan.makeCast"
+      },
+      {
+        "title": "Create channel",
+        "command": "laravel-artisan.makeChannel"
+      },
+      {
+        "title": "Create command",
+        "command": "laravel-artisan.makeCommand"
+      },
+      {
+        "title": "Create component",
+        "command": "laravel-artisan.makeComponent"
+      },
+      {
+        "title": "Create controller",
+        "command": "laravel-artisan.makeController"
+      },
+      {
+        "title": "Create event",
+        "command": "laravel-artisan.makeEvent"
+      },
+      {
+        "title": "Create exception",
+        "command": "laravel-artisan.makeException"
+      },
+      {
+        "title": "Create factory",
+        "command": "laravel-artisan.makeFactory"
+      },
+      {
+        "title": "Create job",
+        "command": "laravel-artisan.makeJob"
+      },
+      {
+        "title": "Create listener",
+        "command": "laravel-artisan.makeListener"
+      },
+      {
+        "title": "Create mail",
+        "command": "laravel-artisan.makeMail"
+      },
+      {
+        "title": "Create middleware",
+        "command": "laravel-artisan.makeMiddleware"
+      },
+      {
+        "title": "Create migration",
+        "command": "laravel-artisan.makeMigration"
+      },
+      {
+        "title": "Create model",
+        "command": "laravel-artisan.makeModel"
+      },
+      {
+        "title": "Create notification",
+        "command": "laravel-artisan.makeNotification"
+      },
+      {
+        "title": "Create observer",
+        "command": "laravel-artisan.makeObserver"
+      },
+      {
+        "title": "Create policy",
+        "command": "laravel-artisan.makePolicy"
+      },
+      {
+        "title": "Create provider",
+        "command": "laravel-artisan.makeProvider"
+      },
+      {
+        "title": "Create request",
+        "command": "laravel-artisan.makeRequest"
+      },
+      {
+        "title": "Create resource",
+        "command": "laravel-artisan.makeResource"
+      },
+      {
+        "title": "Create rule",
+        "command": "laravel-artisan.makeRule"
+      },
+      {
+        "title": "Create scope",
+        "command": "laravel-artisan.makeScope"
+      },
+      {
+        "title": "Create seeder",
+        "command": "laravel-artisan.makeSeeder"
+      },
+      {
+        "title": "Create test",
+        "command": "laravel-artisan.makeTest"
+      },
+      {
+        "title": "Create view",
+        "command": "laravel-artisan.makeView"
       }
     ]
   },
