@@ -25,7 +25,6 @@
             {
                 "title": "guy",
                 "command": "laravel-artisan.guy"
-
             }
         ]
     },

@@ -1,7 +1,6 @@
-function runLaravelCommandWithInput(args, placeholder, message, prompt) {
+function runLaravelCommandWithInput(args, placeholder, message) {
   let options = {
-    placeholder: placeholder,
-    prompt: prompt,
+    placeholder: placeholder
   };
   nova.workspace.showInputPalette(
     message,
@@ -39,6 +38,17 @@ function executeCommand(args) {
 
   process.onDidExit(function (status) {
     console.log("Process exited with status: " + status);
+
+    if(status == 0)
+    nova.workspace.showInformativeMessage(
+          "Done"
+      );
+
+    else if (status != 0) {
+         console.error("process finished with non-zero status");
+         nova.workspace.showErrorMessage("Error: " + line);
+         return;
+     }
   });
 
   process.start();
