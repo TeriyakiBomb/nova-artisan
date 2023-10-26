@@ -39,29 +39,29 @@ function executeCommand(command, successMessage) {
   process.onStdout(function (data) {
     if (data.includes("ERROR")) {
       console.error("Process finished with errors");
-      nova.workspace.showErrorMessage("⚠️ " + data.trim());
+      nova.workspace.showErrorMessage(`⚠️ ${data.trim()}`);
       artisanError = true;
       //console.log(artisanError);
       return;
     } else if (stdOutRunCount == 0) {
-      console.log("Running " + fullCommand);
+      console.log(`🏃‍♀️ Running ${fullCommand}`);
       stdOutRunCount++;
     }
-    console.log(data);
+    console.log(data.trim());
   });
 
   process.onStderr(function (data) {
-    console.error("Error: " + data);
+    console.error(`⚠️ Error: ${data.trim()}`);
   });
 
   process.onDidExit(function (status) {
-    console.log("Process exited with status: " + status);
     //console.log(artisanError);
     var notificationsOn = nova.config.get(SILENCE_NOTIFICATIONS);
-    if (status == 0 && !artisanError && !notificationsOn) {
+    console.log(`👍 Process exited with status: ${status}`);
+    if (status === 0 && !artisanError && !notificationsOn) {
       nova.workspace.showInformativeMessage(successMessage);
     } else if (status != 0) {
-      console.error("Process finished with non-zero status - " + status);
+      console.error(`⚠️ Process finished with non-zero status - ${status}`);
       return;
     }
   });
