@@ -1,40 +1,75 @@
 {
-    "identifier": "teriyaki.LaravelArtisan",
-    "name": "Laravel Artisan",
-    "organization": "Teriyaki",
-    "description": "Lorem ipsum, dolor sit amet.",
-    "version": "1.0",
-    "categories": ["commands"],
+  "identifier": "teriyaki.LaravelArtisan",
+  "name": "Laravel Artisan",
+  "organization": "Teriyaki",
+  "description": "Lorem ipsum, dolor sit amet.",
+  "version": "0.1",
+  "categories": ["commands"],
 
-    "main": "main.js",
+  "main": "main.js",
 
-    "activationEvents": [
-        "onLanguage:html"
-    ],
+  "activationEvents": ["onLanguage:php"],
 
-    "entitlements": {
-        "process": true
-    },
+  "entitlements": {
+    "process": true,
+    "filesystem": "readwrite"
+  },
 
-    "commands": {
-        "extensions": [
-            {
-                "title": "Artisan - Model",
-                "command": "laravel-artisan.makeModel"
-            },
-            {
-                "title": "guy",
-                "command": "laravel-artisan.guy"
-            }
-        ]
-    },
-
-    "config": [
-        {
-            "key": "laravel-artisan.foobar",
-            "title": "Foo the bar",
-            "type": "boolean",
-            "default": false
-        }
+  "commands": {
+    "extensions": [
+      {
+        "title": "Cache config",
+        "command": "laravel-artisan.configCache"
+      },
+      {
+        "title": "Clear config cache",
+        "command": "laravel-artisan.configClear"
+      },
+      {
+        "title": "Clear cache",
+        "command": "laravel-artisan.cacheClear"
+      },
+      {
+        "title": "Forget cache",
+        "command": "laravel-artisan.cacheForget"
+      },
+      {
+        "title": "Clear config",
+        "command": "laravel-artisan.cacheForget"
+      },
+      {
+        "title": "Clear config",
+        "command": "laravel-artisan.cacheForget"
+      },
+      {
+        "title": "Make model",
+        "command": "laravel-artisan.makeModel"
+      },
+      {
+        "title": "Seed database",
+        "command": "laravel-artisan.dbSeed"
+      },
+      {
+        "title": "Wipe database",
+        "command": "laravel-artisan.dbWipe"
+      },
+      {
+        "title": "Migrate",
+        "command": "laravel-artisan.migrate"
+      },
+      {
+        "title": "Migrate fresh",
+        "command": "laravel-artisan.migrateFresh"
+      }
     ]
+  },
+
+  "config": [
+    {
+      "key": "laravel-artisan.foobar",
+      "title": "Foo the bar",
+      "type": "boolean",
+      "default": false
+    }
+  ]
 }

@@ -59,10 +59,65 @@ function executeCommand(command, successMessage) {
   process.start();
 }
 
-nova.commands.register("laravel-artisan.guy", (workspace) => {
+////////////////////////////////////////////////////////////////////////
+
+// Config
+
+nova.commands.register("laravel-artisan.configCache", (workspace) => {
   runLaravelCommand({
-    command: "make:model boog",
-    successMessage: "Task completed successfully!",
+    command: "config:cache",
+    successMessage: "💿 Config cache created",
+  });
+});
+nova.commands.register("laravel-artisan.configClear", (workspace) => {
+  runLaravelCommand({
+    command: "config:clear",
+    successMessage: "🗑️ Config cache removed",
+  });
+});
+
+// Cache
+
+nova.commands.register("laravel-artisan.cacheClear", (workspace) => {
+  runLaravelCommand({
+    command: "cache:clear",
+    successMessage: "♻️ Cache cleared",
+  });
+});
+nova.commands.register("laravel-artisan.cacheForget", (workspace) => {
+  runLaravelCommand({
+    command: "cache:forget",
+    successMessage: "❓ Cache forgotten",
+  });
+});
+
+// Database
+
+nova.commands.register("laravel-artisan.dbSeed", (workspace) => {
+  runLaravelCommand({
+    command: "db:seed",
+    successMessage: "🌱 Database seeded",
+  });
+});
+nova.commands.register("laravel-artisan.dbWipe", (workspace) => {
+  runLaravelCommand({
+    command: "db:wipe ",
+    successMessage: "🧻 Database wiped",
+  });
+});
+
+// Migrate
+
+nova.commands.register("laravel-artisan.migrate", (workspace) => {
+  runLaravelCommand({
+    command: "migrate",
+    successMessage: "🛫 Migrated!",
+  });
+});
+nova.commands.register("laravel-artisan.migrateFresh", (workspace) => {
+  runLaravelCommand({
+    command: "migrate:fresh",
+    successMessage: "🛫 DB cleared and migrated",
   });
 });
 
