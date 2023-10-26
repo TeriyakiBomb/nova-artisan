@@ -34,7 +34,7 @@ function executeCommand(command, successMessage) {
     console.log("Running " + data);
     if (data.includes("ERROR")) {
       console.error("Process finished with errors");
-      nova.workspace.showErrorMessage(data.trim());
+      nova.workspace.showErrorMessage("⚠️ " + data.trim());
       artisanError = true;
       //console.log(artisanError);
       return;
