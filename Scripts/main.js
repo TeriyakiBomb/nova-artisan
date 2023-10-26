@@ -30,7 +30,7 @@ function executeCommand(command, successMessage) {
   let process = new Process("/bin/sh", options);
   var artisanError = false;
 
-  process.onStdout(function (data, artisanError) {
+  process.onStdout(function (data) {
     console.log("Running " + data);
     if (data.includes("ERROR")) {
       console.error("Process finished with errors");
