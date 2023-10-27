@@ -1,0 +1,22 @@
+{
+  "name": "laravel-artisan",
+  "version": "1.0.0",
+  "description": "**Laravel Artisan** allows you to run artisan tasks from Nova's command palette.",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TeriyakiBomb/nova-artisan.git"
+  },
+  "author": "https://github.com/TeriyakiBomb",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/TeriyakiBomb/nova-artisan/issues"
+  },
+  "homepage": "https://github.com/TeriyakiBomb/nova-artisan#readme",
+  "devDependencies": {
+    "eslint": "^8.52.0"
+  }
+}
