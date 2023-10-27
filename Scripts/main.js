@@ -43,19 +43,20 @@ function executeCommand(command, successMessage) {
   let process = new Process(shell, options);
   let artisanError = false;
   let stdOutRunCount = 0;
+  let stdoutOutput = "";
 
   process.onStdout(function (data) {
     if (data.includes("ERROR")) {
       console.error("Process finished with errors");
       nova.workspace.showErrorMessage(`⚠️ ${data.trim()}`);
       artisanError = true;
-      //console.log(artisanError);
       return;
     } else if (stdOutRunCount === 0) {
       console.log(`🏃‍♀️ Running ${fullCommand}`);
       stdOutRunCount++;
     }
-    console.log(data.trim());
+
+    stdoutOutput += data.trim() + "\n"; // Append each trimmed line to the stdoutOutput variable
   });
 
   process.onStderr(function (data) {
@@ -63,9 +64,9 @@ function executeCommand(command, successMessage) {
   });
 
   process.onDidExit(function (status) {
-    //console.log(artisanError);
     var notificationsOn = nova.config.get(SILENCE_NOTIFICATIONS);
     console.log(`👍 Process exited with status: ${status}`);
+
     if (status === 0 && !artisanError && !notificationsOn) {
       showNotification(successMessage, `Successfully ran ${fullCommand}`);
     } else if (status !== 0) {
