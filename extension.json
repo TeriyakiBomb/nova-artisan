@@ -3,8 +3,10 @@
   "name": "Laravel Artisan",
   "organization": "Teriyaki",
   "description": "Run artisan commands from the command palette",
+  "repository": "https://github.com/TeriyakiBomb/nova-artisan",
+  "bugs": "https://github.com/TeriyakiBomb/nova-artisan/issues",
   "funding": "https://ko-fi.com/ashteriyaki",
-  "version": "0.1",
+  "version": "1.0",
   "categories": ["commands", "Tasks"],
   "license": "MIT",
 

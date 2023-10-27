@@ -4,11 +4,12 @@
 🎈 It can also be helpful to include a screenshot or GIF showing your extension in action:
 -->
 
-![](https://nova.app/images/en/dark/editor.png)
+![](https://raw.githubusercontent.com/TeriyakiBomb/nova-artisan/main/screen.gif)
 
 ## Requirements
 
 Laravel Artisan requires a working Laravel project and artisan (obvs).
+The extension also assumes that laravel is at the root of your Nova project.
 There's currently no external dependencies as this extension simply runs shell commands.
 
 ## Usage
