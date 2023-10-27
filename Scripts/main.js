@@ -15,6 +15,10 @@ function runLaravelCommandWithInput(options) {
       command += " " + result;
       executeCommand(command, successMessage);
     } else {
+      showNotification(
+        "🚫 Invalid input.",
+        "This only accepts name and arguments, like ModelName -cf."
+      );
       console.log(
         "🚫 Invalid input. This only accepts name and arguments, like ModelName -cf."
       );
@@ -63,7 +67,7 @@ function executeCommand(command, successMessage) {
     var notificationsOn = nova.config.get(SILENCE_NOTIFICATIONS);
     console.log(`👍 Process exited with status: ${status}`);
     if (status === 0 && !artisanError && !notificationsOn) {
-      nova.workspace.showInformativeMessage(successMessage);
+      showNotification(successMessage, `Successfully ran ${fullCommand}`);
     } else if (status != 0) {
       console.error(`⚠️ Process finished with non-zero status - ${status}`);
       return;
@@ -71,6 +75,15 @@ function executeCommand(command, successMessage) {
   });
 
   process.start();
+}
+
+function showNotification(title, body) {
+  let notification = new NotificationRequest("LaravelArtisan-notification");
+
+  notification.title = title;
+  notification.body = body;
+
+  nova.notifications.add(notification);
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -209,7 +222,7 @@ artisanMakeCommand.forEach((command) => {
     .toLowerCase();
 
   const message = `What should this ${strippedCommandName} be named?`;
-  const successMessage = `💎 Successfully created ${strippedCommandName}`;
+  const successMessage = `💎 Created ${strippedCommandName}`;
 
   nova.commands.register(`laravel-artisan.${formattedCommand}`, (options) => {
     runLaravelCommandWithInput({
