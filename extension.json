@@ -7,7 +7,7 @@
   "bugs": "https://github.com/TeriyakiBomb/nova-artisan/issues",
   "funding": "https://ko-fi.com/ashteriyaki",
   "version": "1.0",
-  "categories": ["commands", "Tasks"],
+  "categories": ["commands", "tasks"],
   "license": "MIT",
 
   "main": "main.js",
