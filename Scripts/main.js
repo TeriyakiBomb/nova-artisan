@@ -233,3 +233,18 @@ artisanMakeCommand.forEach((command) => {
     });
   });
 });
+
+nova.commands.register("laravel-artisan.fileOpenTest", (workspace) => {
+  const fileDirectory = nova.workspace.path + "/app/Http/Middleware/";
+  const listDirectory = nova.fs
+    .listdir(fileDirectory)
+    .filter((file) => file !== ".DS_Store");
+  let options = "";
+  console.log(listDirectory);
+
+  function openThisFile(file) {
+    let cake = nova.workspace.openFile(fileDirectory + file);
+    console.log(cake);
+  }
+  workspace.showChoicePalette(listDirectory, options, openThisFile);
+});

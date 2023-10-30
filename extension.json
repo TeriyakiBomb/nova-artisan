@@ -180,7 +180,11 @@
         "title": "Create view",
         "command": "laravel-artisan.makeView"
       },
-      { "separator": true }
+      { "separator": true },
+      {
+        "title": "fileOpenTest",
+        "command": "laravel-artisan.fileOpenTest"
+      }
     ]
   },
 
