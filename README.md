@@ -1,10 +1,10 @@
-**Laravel Artisan** allows you to run artisan tasks from Nova's command palette.
+**Laravel Artisan** allows you to run artisan tasks from Nova's command palette and open commonly used files directories quickly.
 
 <!--
 🎈 It can also be helpful to include a screenshot or GIF showing your extension in action:
 -->
 
-![](https://raw.githubusercontent.com/TeriyakiBomb/nova-artisan/main/screen.gif)
+![](https://raw.githubusercontent.com/TeriyakiBomb/nova-artisan/main/Images/screen.gif)
 
 ## Requirements
 
@@ -18,7 +18,7 @@ There's currently no external dependencies as this extension simply runs shell c
 🎈 If users will interact with your extension manually, describe those options:
 -->
 
-To run Laravel Artisan:
+### Running Laravel Artisan commands:
 
 - Select the **Editor → Laravel Artisan** menu item; or
 - Open the command palette and type `Laravel Artisan` followed by the command you'd like to run. This extension supports single-fire commands like Cache clearing and also commands that need a name, like creating models and controllers. It also allows additional arguments like `--seed`
@@ -41,7 +41,25 @@ Currently supported commands are:
 
 and **all make commands**
 
-With more to come in subsequent releases
+With more to come in subsequent releases.
+
+### Quickly open common directories
+
+Need to go to a Controller and wanna use the command palette. Ok, so you type your controller name into the open quickly palette and you get a list including with a bunch of similarly named files and spend a few seconds tapping through the list to find what you what you want and find it really annoying? Oh, that doesn't annoy you? Well it annoys me, so I've added commands to list commonly accessed directories, saving you a few taps.
+
+![](https://raw.githubusercontent.com/TeriyakiBomb/nova-artisan/main/Images/openDir.gif)
+
+Currently opens:
+
+- Controllers
+- Middlewares
+- Providers
+- Models
+- Factories
+- Migrations
+- Seeders
+
+I recommend mapping these to keyboard shortcuts to navigate your Laravel project even faster.
 
 ### Configuration
 
