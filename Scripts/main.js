@@ -234,17 +234,34 @@ artisanMakeCommand.forEach((command) => {
   });
 });
 
-nova.commands.register("laravel-artisan.fileOpenTest", (workspace) => {
-  const fileDirectory = nova.workspace.path + "/app/Http/Middleware/";
-  const listDirectory = nova.fs
-    .listdir(fileDirectory)
-    .filter((file) => file !== ".DS_Store");
-  let options = "";
-  console.log(listDirectory);
+const laravelDirs = [
+  "/app/Http/Controllers",
+  "/app/Http/Middleware",
+  "/app/Models",
+  "/database/factories",
+  "/database/migrations",
+  "/database/seeders",
+];
 
-  function openThisFile(file) {
-    let cake = nova.workspace.openFile(fileDirectory + file);
-    console.log(cake);
-  }
-  workspace.showChoicePalette(listDirectory, options, openThisFile);
+laravelDirs.forEach((dir) => {
+  const dirName = dir
+    .split("/")
+    .pop()
+    .replace(/(?:^|\s)\S/g, (char) => char.toUpperCase());
+  const commandName = `laravel-artisan.open${dirName}`;
+
+  nova.commands.register(commandName, (workspace) => {
+    const fileDirectory = nova.workspace.path + dir + "/";
+    const listDirectory = nova.fs
+      .listdir(fileDirectory)
+      .filter((file) => file !== ".DS_Store");
+    let options = "";
+
+    function openThisFile(file) {
+      let cake = nova.workspace.openFile(fileDirectory + file);
+      console.log(fileDirectory);
+    }
+
+    workspace.showChoicePalette(listDirectory, options, openThisFile);
+  });
 });

@@ -182,8 +182,28 @@
       },
       { "separator": true },
       {
-        "title": "fileOpenTest",
-        "command": "laravel-artisan.fileOpenTest"
+        "title": "Open Controller",
+        "command": "laravel-artisan.openControllers"
+      },
+      {
+        "title": "Open Middleware",
+        "command": "laravel-artisan.openMiddleware"
+      },
+      {
+        "title": "Open Model",
+        "command": "laravel-artisan.openModels"
+      },
+      {
+        "title": "Open Factory",
+        "command": "laravel-artisan.openFactories"
+      },
+      {
+        "title": "Open Migration",
+        "command": "laravel-artisan.openMigrations"
+      },
+      {
+        "title": "Open Seeder",
+        "command": "laravel-artisan.openSeeders"
       }
     ]
   },
