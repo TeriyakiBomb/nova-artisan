@@ -237,6 +237,7 @@ artisanMakeCommand.forEach((command) => {
 const laravelDirs = [
   "/app/Http/Controllers",
   "/app/Http/Middleware",
+  "/app/Http/Providers",
   "/app/Models",
   "/database/factories",
   "/database/migrations",
