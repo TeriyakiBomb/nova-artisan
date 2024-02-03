@@ -270,6 +270,25 @@ laravelDirs.forEach((dir) => {
 nova.commands.register("laravel-artisan.publishAllConfigs", (options) => {
   runLaravelCommand({
     command: "config:publish",
-    successMessage: "♻️ Configs published",
+    successMessage: "⚙️ All config files published",
   });
+});
+
+nova.commands.register("laravel-artisan.publishConfig", (workspace) => {
+  const fileDirectory = nova.workspace.path + "/config";
+  const listDirectory = nova.fs
+    .listdir(fileDirectory)
+    .filter((file) => file !== ".DS_Store");
+  let options = "";
+
+  function configToPublish(file) {
+    const fileName = file.endsWith(".php") ? file.slice(0, -4) : file;
+    const commandName = `publish:config ${fileName}`;
+    runLaravelCommand({
+      command: commandName,
+      successMessage: `⚙️ Config ${fileName} published`,
+    });
+  }
+
+  nova.workspace.showChoicePalette(listDirectory, options, configToPublish);
 });
