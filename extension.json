@@ -208,6 +208,10 @@
       {
         "title": "Open Seeder",
         "command": "laravel-artisan.openSeeders"
+      },
+      {
+        "title": "Publish all configs",
+        "command": "laravel-artisan.publishAllConfigs"
       }
     ]
   },

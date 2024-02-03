@@ -266,3 +266,10 @@ laravelDirs.forEach((dir) => {
     workspace.showChoicePalette(listDirectory, options, openThisFile);
   });
 });
+
+nova.commands.register("laravel-artisan.publishAllConfigs", (options) => {
+  runLaravelCommand({
+    command: "config:publish",
+    successMessage: "♻️ Configs published",
+  });
+});
