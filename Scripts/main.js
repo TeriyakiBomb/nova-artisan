@@ -259,8 +259,8 @@ laravelDirs.forEach((dir) => {
     let options = "";
 
     function openThisFile(file) {
-      let cake = nova.workspace.openFile(fileDirectory + file);
-      console.log(fileDirectory);
+      nova.workspace.openFile(fileDirectory + file);
+      //console.log(fileDirectory);
     }
 
     workspace.showChoicePalette(listDirectory, options, openThisFile);
