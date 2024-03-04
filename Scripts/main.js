@@ -10,7 +10,7 @@ function runLaravelCommandWithInput(options) {
 
   const safeString = /^[a-zA-Z]+(\s-\w+)?$/; //Only letters and hyphens
 
-  nova.workspace.showInputPalette(message, inputOptions, function (result) {
+  nova.workspace.showInputPalette(message, inputOptions, (result) => {
     if (result && safeString.test(result)) {
       command += " " + result;
       executeCommand(command, successMessage);
@@ -45,7 +45,7 @@ function executeCommand(command, successMessage) {
   let stdOutRunCount = 0;
   let stdoutOutput = "";
 
-  process.onStdout(function (data) {
+  process.onStdout((data) => {
     if (data.includes("ERROR")) {
       console.error("Process finished with errors");
       nova.workspace.showErrorMessage(`⚠️ ${data.trim()}`);
@@ -59,11 +59,11 @@ function executeCommand(command, successMessage) {
     stdoutOutput += data.trim() + "\n"; // Append each trimmed line to the stdoutOutput variable
   });
 
-  process.onStderr(function (data) {
+  process.onStderr((data) => {
     console.error(`⚠️ Error: ${data.trim()}`);
   });
 
-  process.onDidExit(function (status) {
+  process.onDidExit((status) => {
     var notificationsOn = nova.config.get(SILENCE_NOTIFICATIONS);
     console.log(`👍 Process exited with status: ${status}`);
 
