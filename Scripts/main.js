@@ -64,7 +64,7 @@ function executeCommand(command, successMessage) {
   });
 
   process.onDidExit((status) => {
-    var notificationsOn = nova.config.get(SILENCE_NOTIFICATIONS);
+    const notificationsOn = nova.config.get(SILENCE_NOTIFICATIONS);
     console.log(`👍 Process exited with status: ${status}`);
 
     if (status === 0 && !artisanError && !notificationsOn) {
