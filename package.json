@@ -1,6 +1,6 @@
 {
   "name": "laravel-artisan",
-  "version": "1.0.0",
+  "version": "1.2.0",
   "description": "**Laravel Artisan** allows you to run artisan tasks from Nova's command palette.",
   "main": "main.js",
   "scripts": {

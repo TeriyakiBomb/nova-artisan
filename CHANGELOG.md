@@ -1,3 +1,7 @@
+## Version 1.2
+**NEW** Added Laravel 11 config commands
+
+
 ## Version 1.1 🗂️
 
 **NEW** Open common laravel folders from the command line with Open...
