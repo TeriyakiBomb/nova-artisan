@@ -6,7 +6,7 @@
   "repository": "https://github.com/TeriyakiBomb/nova-artisan",
   "bugs": "https://github.com/TeriyakiBomb/nova-artisan/issues",
   "funding": "https://ko-fi.com/ashteriyaki",
-  "version": "1.1",
+  "version": "1.2",
   "categories": ["commands", "tasks"],
   "license": "MIT",
 
