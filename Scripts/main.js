@@ -279,112 +279,101 @@ const resourceDirs = [
 ];
 
 function registerCommands(commandType, resourceDirs) {
-  const commandBaseName =
-    commandType.charAt(0).toUpperCase() + commandType.slice(1); // Capitalize the first letter
+  const capitalizeFirstLetter = (str) =>
+    str.charAt(0).toUpperCase() + str.slice(1);
 
-  resourceDirs.forEach((directory) => {
-    let directoryName = "";
+  const getFormattedDirectoryName = (directory, commandType) => {
     if (commandType === "livewire") {
-      if (directory === "/app/Livewire/") {
-        directoryName = "Components"; // For Livewire components in app/Livewire
-      } else {
-        directoryName = "Views"; // For Livewire views in resources/views/livewire
+      return directory === "/app/Livewire/" ? "Components" : "Views";
+    }
+    return directory
+      .split("/")
+      .filter(Boolean)
+      .pop()
+      .replace(/(?:^|\s)\S/g, (char) => char.toUpperCase());
+  };
+
+  const createCommandName = (commandBaseName, directoryName, prefix) =>
+    `laravel-artisan.${prefix}${commandBaseName}${directoryName}`;
+
+  const openDirectory = async (workspace, directory) => {
+    let files = [];
+
+    async function collectFiles(directory) {
+      const list = await nova.fs.listdir(directory);
+      for (const item of list) {
+        if (![".DS_Store", ".gitignore", ".gitkeep"].includes(item)) {
+          const fullPath = nova.path.join(directory, item);
+          const stat = await nova.fs.stat(fullPath);
+          if (stat.isDirectory()) {
+            await collectFiles(fullPath);
+          } else {
+            files.push(item);
+          }
+        }
       }
-    } else {
-      directoryName = directory
-        .split("/")
-        .filter(Boolean)
-        .pop()
-        .replace(/(?:^|\s)\S/g, (char) => char.toUpperCase());
     }
 
-    const openCommandName = `laravel-artisan.open${commandBaseName}${directoryName}`;
-    const browseCommandName = `laravel-artisan.browse${commandBaseName}${directoryName}`;
+    await collectFiles(directory);
+    files.sort();
+
+    workspace.showChoicePalette(files, {}, async (choice) => {
+      nova.workspace.openFile(nova.path.join(directory, choice));
+    });
+  };
+
+  const browseDirectory = async (workspace, directory) => {
+    const files = [];
+    const dirs = [];
+
+    const list = await nova.fs.listdir(directory);
+    for (const item of list) {
+      if (![".DS_Store", ".gitignore", ".gitkeep"].includes(item)) {
+        const fullPath = nova.path.join(directory, item);
+        const stat = await nova.fs.stat(fullPath);
+        if (stat.isDirectory()) {
+          dirs.push({ name: item + "/", fullPath: fullPath });
+        } else {
+          files.push(item);
+        }
+      }
+    }
+
+    const sortedOptions = [...files, ...dirs.map((dir) => dir.name)].sort();
+
+    workspace.showChoicePalette(sortedOptions, {}, async (choice) => {
+      const selectedFile = files.find((file) => file === choice);
+      const selectedDir = dirs.find((dir) => dir.name === choice);
+      if (selectedFile) {
+        nova.workspace.openFile(nova.path.join(directory, selectedFile));
+      } else if (selectedDir) {
+        await browseDirectory(workspace, selectedDir.fullPath);
+      }
+    });
+  };
+
+  resourceDirs.forEach((directory) => {
+    const directoryName = getFormattedDirectoryName(directory, commandType);
+    const commandBaseName = capitalizeFirstLetter(commandType);
+    const openCommandName = createCommandName(
+      commandBaseName,
+      directoryName,
+      "open"
+    );
+    const browseCommandName = createCommandName(
+      commandBaseName,
+      directoryName,
+      "browse"
+    );
 
     nova.commands.register(openCommandName, async (workspace) => {
       const fileDirectory = nova.path.join(nova.workspace.path, directory);
-
-      async function collectFiles(directory) {
-        let files = [];
-        const list = await nova.fs.listdir(directory);
-        for (const item of list) {
-          if (
-            ![".DS_Store", ".gitignore", ".gitkeep"].includes(item) &&
-            !(
-              commandType === "blade" &&
-              (item === "livewire" || item === "components")
-            )
-          ) {
-            const fullPath = nova.path.join(directory, item);
-            const stat = await nova.fs.stat(fullPath);
-            if (stat.isDirectory()) {
-              const subFiles = await collectFiles(fullPath);
-              files = files.concat(
-                subFiles.map((subFile) => nova.path.join(item, subFile))
-              );
-            } else {
-              files.push(item);
-            }
-          }
-        }
-        return files.sort(); // Sort files alphabetically
-      }
-
-      const files = await collectFiles(fileDirectory);
-
-      workspace.showChoicePalette(files, {}, async (choice) => {
-        nova.workspace.openFile(nova.path.join(fileDirectory, choice));
-      });
+      openDirectory(workspace, fileDirectory);
     });
 
     nova.commands.register(browseCommandName, async (workspace) => {
       const fileDirectory = nova.path.join(nova.workspace.path, directory);
-
-      async function collectFiles(directory) {
-        const files = [];
-        const dirs = [];
-        const list = await nova.fs.listdir(directory);
-        for (const item of list) {
-          if (
-            ![".DS_Store", ".gitignore", ".gitkeep"].includes(item) &&
-            !(
-              commandType === "blade" &&
-              (item === "livewire" || item === "components")
-            )
-          ) {
-            const fullPath = nova.path.join(directory, item);
-            const stat = await nova.fs.stat(fullPath);
-            if (stat.isDirectory()) {
-              dirs.push({
-                name: item + "/",
-                fullPath: fullPath,
-              });
-            } else {
-              files.push(item);
-            }
-          }
-        }
-        return { files, dirs };
-      }
-
-      async function openDirectory(directory) {
-        const { files, dirs } = await collectFiles(directory);
-
-        // Sort files and directories alphabetically
-        const sortedOptions = [...files, ...dirs.map((dir) => dir.name)].sort();
-
-        workspace.showChoicePalette(sortedOptions, {}, async (choice) => {
-          const selectedFile = files.find((file) => file === choice);
-          const selectedDir = dirs.find((dir) => dir.name === choice);
-          if (selectedFile) {
-            nova.workspace.openFile(nova.path.join(directory, selectedFile));
-          } else if (selectedDir) {
-            await openDirectory(selectedDir.fullPath);
-          }
-        });
-      }
-
-      await openDirectory(fileDirectory);
+      browseDirectory(workspace, fileDirectory);
     });
   });
 }
