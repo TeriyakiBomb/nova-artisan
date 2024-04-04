@@ -38,7 +38,7 @@
         "command": "laravel-artisan.cacheForget"
       },
       {
-        "title": "Forget cahce",
+        "title": "Forget cache",
         "command": "laravel-artisan.cacheForget"
       },
       { "separator": true },
@@ -47,34 +47,35 @@
         "command": "laravel-artisan.dbSeed"
       },
       {
-        "title": "Wipe database",
-        "command": "laravel-artisan.dbWipe"
-      },
-      {
         "title": "Migrate",
         "command": "laravel-artisan.migrate"
       },
       {
-        "title": "Migrate fresh",
+        "title": "Migrate - fresh",
         "command": "laravel-artisan.migrateFresh"
       },
       {
-        "title": "Migrate refresh",
+        "title": "Migrate - refresh",
         "command": "laravel-artisan.migrateRefresh"
       },
       {
-        "title": "Migrate reset",
+        "title": "Migrate - reset",
         "command": "laravel-artisan.migrateReset"
       },
       {
-        "title": "Migrate rollback",
+        "title": "Migrate - rollback",
         "command": "laravel-artisan.migrateRollback"
+      },
+      {
+        "title": "Wipe - database",
+        "command": "laravel-artisan.dbWipe"
       },
       { "separator": true },
       {
         "title": "Prune models",
         "command": "laravel-artisan.modelPrune"
       },
+      { "separator": true },
       {
         "title": "Create notifications migration",
         "command": "laravel-artisan.notificationsTable"
@@ -211,11 +212,11 @@
       },
       { "separator": true },
       {
-        "title": "Open Page",
+        "title": "Open View",
         "command": "laravel-artisan.openInertiaPages"
       },
       {
-        "title": "Browse Pages",
+        "title": "Browse Views",
         "command": "laravel-artisan.browseInertiaPages"
       },
       {
@@ -268,12 +269,12 @@
       },
       { "separator": true },
       {
-        "title": "Publish all configs",
-        "command": "laravel-artisan.publishAllConfigs"
-      },
-      {
         "title": "Publish config",
         "command": "laravel-artisan.publishConfig"
+      },
+      {
+        "title": "Publish all configs",
+        "command": "laravel-artisan.publishAllConfigs"
       }
     ]
   },
