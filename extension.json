@@ -209,6 +209,64 @@
         "title": "Open Seeder",
         "command": "laravel-artisan.openSeeders"
       },
+      { "separator": true },
+      {
+        "title": "Open Pages",
+        "command": "laravel-artisan.openInertiaPages"
+      },
+      {
+        "title": "Browse Pages",
+        "command": "laravel-artisan.browseInertiaPages"
+      },
+      {
+        "title": "Open Components",
+        "command": "laravel-artisan.openInertiaComponents"
+      },
+      {
+        "title": "Browse Components",
+        "command": "laravel-artisan.browseInertiaComponents"
+      },
+      {
+        "title": "Open Layouts",
+        "command": "laravel-artisan.openInertiaLayouts"
+      },
+      {
+        "title": "Browse Layouts",
+        "command": "laravel-artisan.browseInertiaLayouts"
+      },
+      {
+        "title": "Open Livewire Views",
+        "command": "laravel-artisan.openLivewireViews"
+      },
+      {
+        "title": "Browse Livewire Views",
+        "command": "laravel-artisan.browseLivewireViews"
+      },
+      {
+        "title": "Open Blade Views",
+        "command": "laravel-artisan.openBladeViews"
+      },
+      {
+        "title": "Browse Blade Views",
+        "command": "laravel-artisan.browseBladeViews"
+      },
+      {
+        "title": "Open Blade Components",
+        "command": "laravel-artisan.openBladeComponents"
+      },
+      {
+        "title": "Browse Blade Components",
+        "command": "laravel-artisan.browseBladeComponents"
+      },
+      {
+        "title": "Open Livewire Component",
+        "command": "laravel-artisan.openLivewireComponents"
+      },
+      {
+        "title": "Browse Livewire Components",
+        "command": "laravel-artisan.browseLivewireComponents"
+      },
+      { "separator": true },
       {
         "title": "Publish all configs",
         "command": "laravel-artisan.publishAllConfigs"

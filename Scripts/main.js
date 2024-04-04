@@ -267,6 +267,135 @@ laravelDirs.forEach((dir) => {
   });
 });
 
+const resourceDirs = [
+  [
+    "inertia",
+    "/resources/js/Pages/",
+    "/resources/js/Components/",
+    "/resources/js/Layouts/",
+  ],
+  ["livewire", "/resources/views/livewire", "app/Livewire"],
+  ["blade", "/resources/views/", "/resources/views/components"],
+];
+
+function registerCommands(commandType, resourceDirs) {
+  const commandBaseName =
+    commandType.charAt(0).toUpperCase() + commandType.slice(1); // Capitalize the first letter
+
+  resourceDirs.forEach((directory) => {
+    let directoryName = "";
+    if (commandType === "livewire") {
+      directoryName = "Components"; // Default name
+      if (directory === "app/Livewire") {
+        directoryName = "Components";
+      }
+    } else {
+      directoryName = directory
+        .split("/")
+        .filter(Boolean)
+        .pop()
+        .replace(/(?:^|\s)\S/g, (char) => char.toUpperCase());
+    }
+
+    const openCommandName = `laravel-artisan.open${commandBaseName}${directoryName}`;
+    const browseCommandName = `laravel-artisan.browse${commandBaseName}${directoryName}`;
+
+    nova.commands.register(openCommandName, async (workspace) => {
+      const fileDirectory = nova.path.join(nova.workspace.path, directory);
+
+      async function collectFiles(directory) {
+        let files = [];
+        const list = await nova.fs.listdir(directory);
+        for (const item of list) {
+          if (
+            item !== ".DS_Store" &&
+            !(
+              commandType === "blade" &&
+              (item === "livewire" || item === "components")
+            )
+          ) {
+            const fullPath = nova.path.join(directory, item);
+            const stat = await nova.fs.stat(fullPath);
+            if (stat.isDirectory()) {
+              const subFiles = await collectFiles(fullPath);
+              files = files.concat(
+                subFiles.map((subFile) => nova.path.join(item, subFile))
+              );
+            } else {
+              files.push(item);
+            }
+          }
+        }
+        return files.sort(); // Sort files alphabetically
+      }
+
+      const files = await collectFiles(fileDirectory);
+
+      workspace.showChoicePalette(files, {}, async (choice) => {
+        nova.workspace.openFile(nova.path.join(fileDirectory, choice));
+      });
+    });
+
+    nova.commands.register(browseCommandName, async (workspace) => {
+      const fileDirectory = nova.path.join(nova.workspace.path, directory);
+
+      async function collectFiles(directory) {
+        const files = [];
+        const dirs = [];
+        const list = await nova.fs.listdir(directory);
+        for (const item of list) {
+          if (
+            item !== ".DS_Store" &&
+            !(
+              commandType === "blade" &&
+              (item === "livewire" || item === "components")
+            )
+          ) {
+            const fullPath = nova.path.join(directory, item);
+            const stat = await nova.fs.stat(fullPath);
+            if (stat.isDirectory()) {
+              dirs.push({
+                name: item + "/",
+                fullPath: fullPath,
+              });
+            } else {
+              files.push(item);
+            }
+          }
+        }
+        return { files, dirs };
+      }
+
+      async function openDirectory(directory) {
+        const { files, dirs } = await collectFiles(directory);
+        const filteredFiles = files.filter((file) => file !== ".DS_Store");
+
+        // Sort files and directories alphabetically
+        const sortedOptions = [
+          ...filteredFiles,
+          ...dirs.map((dir) => dir.name),
+        ].sort();
+
+        workspace.showChoicePalette(sortedOptions, {}, async (choice) => {
+          const selectedFile = filteredFiles.find((file) => file === choice);
+          const selectedDir = dirs.find((dir) => dir.name === choice);
+          if (selectedFile) {
+            nova.workspace.openFile(nova.path.join(directory, selectedFile));
+          } else if (selectedDir) {
+            await openDirectory(selectedDir.fullPath);
+          }
+        });
+      }
+
+      await openDirectory(fileDirectory);
+    });
+  });
+}
+
+resourceDirs.forEach(([commandType, ...subDirectories]) => {
+  registerCommands(commandType, subDirectories);
+});
+
 nova.commands.register("laravel-artisan.publishAllConfigs", (options) => {
   runLaravelCommand({
     command: "config:publish",
