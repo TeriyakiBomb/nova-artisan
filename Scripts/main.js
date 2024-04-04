@@ -274,7 +274,7 @@ const resourceDirs = [
     "/resources/js/Components/",
     "/resources/js/Layouts/",
   ],
-  ["livewire", "/resources/views/livewire", "app/Livewire"],
+  ["livewire", "/resources/views/livewire/", "/app/Livewire/"],
   ["blade", "/resources/views/", "/resources/views/components"],
 ];
 
@@ -285,9 +285,10 @@ function registerCommands(commandType, resourceDirs) {
   resourceDirs.forEach((directory) => {
     let directoryName = "";
     if (commandType === "livewire") {
-      directoryName = "Components"; // Default name
-      if (directory === "app/Livewire") {
-        directoryName = "Components";
+      if (directory === "/app/Livewire/") {
+        directoryName = "Components"; // For Livewire components in app/Livewire
+      } else {
+        directoryName = "Views"; // For Livewire views in resources/views/livewire
       }
     } else {
       directoryName = directory
@@ -308,7 +309,7 @@ function registerCommands(commandType, resourceDirs) {
         const list = await nova.fs.listdir(directory);
         for (const item of list) {
           if (
-            item !== ".DS_Store" &&
+            ![".DS_Store", ".gitignore", ".gitkeep"].includes(item) &&
             !(
               commandType === "blade" &&
               (item === "livewire" || item === "components")
@@ -345,7 +346,7 @@ function registerCommands(commandType, resourceDirs) {
         const list = await nova.fs.listdir(directory);
         for (const item of list) {
           if (
-            item !== ".DS_Store" &&
+            ![".DS_Store", ".gitignore", ".gitkeep"].includes(item) &&
             !(
               commandType === "blade" &&
               (item === "livewire" || item === "components")
@@ -368,16 +369,12 @@ function registerCommands(commandType, resourceDirs) {
 
       async function openDirectory(directory) {
         const { files, dirs } = await collectFiles(directory);
-        const filteredFiles = files.filter((file) => file !== ".DS_Store");
 
         // Sort files and directories alphabetically
-        const sortedOptions = [
-          ...filteredFiles,
-          ...dirs.map((dir) => dir.name),
-        ].sort();
+        const sortedOptions = [...files, ...dirs.map((dir) => dir.name)].sort();
 
         workspace.showChoicePalette(sortedOptions, {}, async (choice) => {
-          const selectedFile = filteredFiles.find((file) => file === choice);
+          const selectedFile = files.find((file) => file === choice);
           const selectedDir = dirs.find((dir) => dir.name === choice);
           if (selectedFile) {
             nova.workspace.openFile(nova.path.join(directory, selectedFile));
