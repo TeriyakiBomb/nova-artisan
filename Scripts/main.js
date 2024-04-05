@@ -6,6 +6,24 @@ function runLaravelCommand(options) {
   executeCommand(command, successMessage);
 }
 
+function runLaravelCommandWithWarning(options) {
+  let { message, command, successMessage, warningMessage, errorMessage } =
+    options;
+
+  nova.workspace.showActionPanel(
+    warningMessage,
+    {
+      buttons: ["Proceed", "Cancel"],
+    },
+    (selectedIndex) => {
+      if (selectedIndex === 0) {
+        // Proceed button index
+        executeCommand(command, successMessage);
+      }
+    }
+  );
+}
+
 function runLaravelCommandWithInput(options) {
   let { message, placeholder, command, successMessage, errorMessage } = options;
 
@@ -122,9 +140,16 @@ nova.commands.register("laravel-artisan.dbSeed", (options) => {
   });
 });
 nova.commands.register("laravel-artisan.dbWipe", (options) => {
-  runLaravelCommand({
-    command: "db:wipe ",
-    successMessage: "🧻 Database wiped",
+  const command = "db:wipe";
+  const successMessage = "🧻 Database wiped";
+  const warningMessage =
+    "⚠️ Are you sure you want to wipe the database? This action cannot be undone.";
+
+  runLaravelCommandWithWarning({
+    command: command,
+    successMessage: successMessage,
+    warningMessage: warningMessage,
+    errorMessage: "❌ Error occurred while wiping the database.",
   });
 });
 
