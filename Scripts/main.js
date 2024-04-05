@@ -1,14 +1,15 @@
 const SHELL_PATH_KEY = "laravel-artisan.shell.path";
 const SILENCE_NOTIFICATIONS = "laravel-artisan.silence.notifications";
 
+const artisanMakeCommands = require("./artisanMakeCommands.js");
+
 function runLaravelCommand(options) {
   let { command, successMessage } = options;
   executeCommand(command, successMessage);
 }
 
 function runLaravelCommandWithWarning(options) {
-  let { message, command, successMessage, warningMessage, errorMessage } =
-    options;
+  let { command, successMessage, warningMessage } = options;
 
   nova.workspace.showActionPanel(
     warningMessage,
@@ -198,113 +199,6 @@ nova.commands.register("laravel-artisan.notificationsTable", (options) => {
   });
 });
 
-const artisanMakeCommands = {
-  "make:cast": {
-    message: "What should this cast be named?",
-    errorMessage: "Accepted options are --force and --model.",
-  },
-  "make:channel": {
-    message: "What should this channel be named?",
-    errorMessage: "Accepted options are --force.",
-  },
-  "make:command": {
-    message: "What should this command be named?",
-    errorMessage: "Accepted options are --command and --handler.",
-  },
-  "make:component": {
-    message: "What should this component be named?",
-    errorMessage: "Accepted options are --inline and --view.",
-  },
-  "make:controller": {
-    message: "What should this controller be named?",
-    errorMessage:
-      "Accepted options are --api, --model, --parent, --resource, and --invokable.",
-  },
-  "make:event": {
-    message: "What should this event be named?",
-    errorMessage: "Accepted options are --queued.",
-  },
-  "make:exception": {
-    message: "What should this exception be named?",
-    errorMessage: "Accepted options are --render.",
-  },
-  "make:factory": {
-    message: "What should this factory be named?",
-    errorMessage: "Accepted options are --model and --count.",
-  },
-  "make:job": {
-    message: "What should this job be named?",
-    errorMessage: "Accepted options are --sync and --queue.",
-  },
-  "make:listener": {
-    message: "What should this listener be named?",
-    errorMessage: "Accepted options are --queued.",
-  },
-  "make:mail": {
-    message: "What should this mail be named?",
-    errorMessage: "Accepted options are --markdown and --force.",
-  },
-  "make:middleware": {
-    message: "What should this middleware be named?",
-    errorMessage: "Accepted options are --api.",
-  },
-  "make:migration": {
-    message: "What should this migration be named?",
-    errorMessage:
-      "Accepted options are --create, --table, --pivot, --model, and --path.",
-  },
-  "make:model": {
-    message: "What should this model be named?",
-    errorMessage:
-      "Accepted options are --all, --migration, --controller, --factory, --force, --seeder, --pivot, --resource, and --table.",
-  },
-  "make:notification": {
-    message: "What should this notification be named?",
-    errorMessage: "Accepted options are --markdown and --force.",
-  },
-  "make:observer": {
-    message: "What should this observer be named?",
-    errorMessage: "Accepted options are --model.",
-  },
-  "make:policy": {
-    message: "What should this policy be named?",
-    errorMessage: "Accepted options are --model.",
-  },
-  "make:provider": {
-    message: "What should this provider be named?",
-    errorMessage: "Accepted options are --force.",
-  },
-  "make:request": {
-    message: "What should this request be named?",
-    errorMessage: "Accepted options are --force.",
-  },
-  "make:resource": {
-    message: "What should this resource be named?",
-    errorMessage: "Accepted options are --collection and --api.",
-  },
-  "make:rule": {
-    message: "What should this rule be named?",
-    errorMessage: "Something went wrong.",
-  },
-  "make:scope": {
-    message: "What should this scope be named?",
-    errorMessage: "Accepted options are --model.",
-  },
-  "make:seeder": {
-    message: "What should this seeder be named?",
-    errorMessage: "Something went wrong.",
-  },
-  "make:test": {
-    message: "What should this test be named?",
-    errorMessage:
-      "Accepted options are --unit, --feature, --invokable, --queued, and --sync.",
-  },
-  "make:view": {
-    message: "What should this view be named?",
-    errorMessage: "Something went wrong.",
-  },
-};
-
 Object.entries(artisanMakeCommands).forEach(
   ([command, { message, errorMessage }]) => {
     const formattedCommand = command
@@ -334,6 +228,32 @@ Object.entries(artisanMakeCommands).forEach(
     });
   }
 );
+
+nova.commands.register("laravel-artisan.publishAllConfigs", (options) => {
+  runLaravelCommand({
+    command: "config:publish",
+    successMessage: "⚙️ All config files published",
+  });
+});
+
+nova.commands.register("laravel-artisan.publishConfig", (workspace) => {
+  const fileDirectory = nova.workspace.path + "/config";
+  const listDirectory = nova.fs
+    .listdir(fileDirectory)
+    .filter((file) => file !== ".DS_Store");
+  let options = "";
+
+  function configToPublish(file) {
+    const fileName = file.endsWith(".php") ? file.slice(0, -4) : file;
+    const commandName = `publish:config ${fileName}`;
+    runLaravelCommand({
+      command: commandName,
+      successMessage: `⚙️ Config ${fileName} published`,
+    });
+  }
+
+  nova.workspace.showChoicePalette(listDirectory, options, configToPublish);
+});
 
 const laravelDirs = [
   "/app/Http/Controllers",
@@ -480,30 +400,4 @@ function registerBrowseCommands(commandType, directories) {
 
 Object.entries(resourceDirs).forEach(([commandType, subDirectories]) => {
   registerBrowseCommands(commandType, subDirectories);
-});
-
-nova.commands.register("laravel-artisan.publishAllConfigs", (options) => {
-  runLaravelCommand({
-    command: "config:publish",
-    successMessage: "⚙️ All config files published",
-  });
-});
-
-nova.commands.register("laravel-artisan.publishConfig", (workspace) => {
-  const fileDirectory = nova.workspace.path + "/config";
-  const listDirectory = nova.fs
-    .listdir(fileDirectory)
-    .filter((file) => file !== ".DS_Store");
-  let options = "";
-
-  function configToPublish(file) {
-    const fileName = file.endsWith(".php") ? file.slice(0, -4) : file;
-    const commandName = `publish:config ${fileName}`;
-    runLaravelCommand({
-      command: commandName,
-      successMessage: `⚙️ Config ${fileName} published`,
-    });
-  }
-
-  nova.workspace.showChoicePalette(listDirectory, options, configToPublish);
 });
