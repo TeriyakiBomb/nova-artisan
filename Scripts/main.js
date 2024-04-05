@@ -1,8 +1,13 @@
 const SHELL_PATH_KEY = "laravel-artisan.shell.path";
 const SILENCE_NOTIFICATIONS = "laravel-artisan.silence.notifications";
 
+function runLaravelCommand(options) {
+  let { command, successMessage } = options;
+  executeCommand(command, successMessage);
+}
+
 function runLaravelCommandWithInput(options) {
-  let { message, placeholder, command, successMessage } = options;
+  let { message, placeholder, command, successMessage, errorMessage } = options;
 
   let inputOptions = {
     placeholder: placeholder,
@@ -15,20 +20,10 @@ function runLaravelCommandWithInput(options) {
       command += " " + result;
       executeCommand(command, successMessage);
     } else {
-      showNotification(
-        "🚫 Invalid input.",
-        "This only accepts name and arguments, like ModelName -cf."
-      );
-      console.log(
-        "🚫 Invalid input. This only accepts name and arguments, like ModelName -cf."
-      );
+      showNotification("🚫 Invalid input.", errorMessage);
+      console.log(errorMessage);
     }
   });
-}
-
-function runLaravelCommand(options) {
-  let { command, successMessage } = options;
-  executeCommand(command, successMessage);
 }
 
 function executeCommand(command, successMessage) {
@@ -178,61 +173,142 @@ nova.commands.register("laravel-artisan.notificationsTable", (options) => {
   });
 });
 
-const artisanMakeCommand = [
-  "make:cast",
-  "make:channel",
-  "make:command",
-  "make:component",
-  "make:controller",
-  "make:event",
-  "make:exception",
-  "make:factory",
-  "make:job",
-  "make:listener",
-  "make:mail",
-  "make:middleware",
-  "make:migration",
-  "make:model",
-  "make:notification",
-  "make:observer",
-  "make:policy",
-  "make:provider",
-  "make:request",
-  "make:resource",
-  "make:rule",
-  "make:scope",
-  "make:seeder",
-  "make:test",
-  "make:view",
-];
+const artisanMakeCommands = {
+  "make:cast": {
+    message: "What should this cast be named?",
+    errorMessage: "Accepted options are --force and --model.",
+  },
+  "make:channel": {
+    message: "What should this channel be named?",
+    errorMessage: "Accepted options are --force.",
+  },
+  "make:command": {
+    message: "What should this command be named?",
+    errorMessage: "Accepted options are --command and --handler.",
+  },
+  "make:component": {
+    message: "What should this component be named?",
+    errorMessage: "Accepted options are --inline and --view.",
+  },
+  "make:controller": {
+    message: "What should this controller be named?",
+    errorMessage:
+      "Accepted options are --api, --model, --parent, --resource, and --invokable.",
+  },
+  "make:event": {
+    message: "What should this event be named?",
+    errorMessage: "Accepted options are --queued.",
+  },
+  "make:exception": {
+    message: "What should this exception be named?",
+    errorMessage: "Accepted options are --render.",
+  },
+  "make:factory": {
+    message: "What should this factory be named?",
+    errorMessage: "Accepted options are --model and --count.",
+  },
+  "make:job": {
+    message: "What should this job be named?",
+    errorMessage: "Accepted options are --sync and --queue.",
+  },
+  "make:listener": {
+    message: "What should this listener be named?",
+    errorMessage: "Accepted options are --queued.",
+  },
+  "make:mail": {
+    message: "What should this mail be named?",
+    errorMessage: "Accepted options are --markdown and --force.",
+  },
+  "make:middleware": {
+    message: "What should this middleware be named?",
+    errorMessage: "Accepted options are --api.",
+  },
+  "make:migration": {
+    message: "What should this migration be named?",
+    errorMessage:
+      "Accepted options are --create, --table, --pivot, --model, and --path.",
+  },
+  "make:model": {
+    message: "What should this model be named?",
+    errorMessage:
+      "Accepted options are --all, --migration, --controller, --factory, --force, --seeder, --pivot, --resource, and --table.",
+  },
+  "make:notification": {
+    message: "What should this notification be named?",
+    errorMessage: "Accepted options are --markdown and --force.",
+  },
+  "make:observer": {
+    message: "What should this observer be named?",
+    errorMessage: "Accepted options are --model.",
+  },
+  "make:policy": {
+    message: "What should this policy be named?",
+    errorMessage: "Accepted options are --model.",
+  },
+  "make:provider": {
+    message: "What should this provider be named?",
+    errorMessage: "Accepted options are --force.",
+  },
+  "make:request": {
+    message: "What should this request be named?",
+    errorMessage: "Accepted options are --force.",
+  },
+  "make:resource": {
+    message: "What should this resource be named?",
+    errorMessage: "Accepted options are --collection and --api.",
+  },
+  "make:rule": {
+    message: "What should this rule be named?",
+    errorMessage: "Something went wrong.",
+  },
+  "make:scope": {
+    message: "What should this scope be named?",
+    errorMessage: "Accepted options are --model.",
+  },
+  "make:seeder": {
+    message: "What should this seeder be named?",
+    errorMessage: "Something went wrong.",
+  },
+  "make:test": {
+    message: "What should this test be named?",
+    errorMessage:
+      "Accepted options are --unit, --feature, --invokable, --queued, and --sync.",
+  },
+  "make:view": {
+    message: "What should this view be named?",
+    errorMessage: "Something went wrong.",
+  },
+};
 
-artisanMakeCommand.forEach((command) => {
-  const formattedCommand = command
-    .split(":")
-    .map((word, index) => {
-      if (index === 0) {
-        return word;
-      }
-      return word.charAt(0).toUpperCase() + word.slice(1);
-    })
-    .join("");
+Object.entries(artisanMakeCommands).forEach(
+  ([command, { message, errorMessage }]) => {
+    const formattedCommand = command
+      .split(":")
+      .map((word, index) => {
+        if (index === 0) {
+          return word;
+        }
+        return word.charAt(0).toUpperCase() + word.slice(1);
+      })
+      .join("");
 
-  const strippedCommandName = formattedCommand
-    .replace("make", "")
-    .toLowerCase();
+    const strippedCommandName = formattedCommand
+      .replace("make", "")
+      .toLowerCase();
 
-  const message = `What should this ${strippedCommandName} be named?`;
-  const successMessage = `💎 Created ${strippedCommandName}`;
+    const successMessage = `💎 Created ${strippedCommandName}`;
 
-  nova.commands.register(`laravel-artisan.${formattedCommand}`, (options) => {
-    runLaravelCommandWithInput({
-      message: message,
-      placeholder: "Name",
-      command: command,
-      successMessage: successMessage,
+    nova.commands.register(`laravel-artisan.${formattedCommand}`, (options) => {
+      runLaravelCommandWithInput({
+        message: message,
+        placeholder: "Name",
+        command: command,
+        successMessage: successMessage,
+        errorMessage: errorMessage,
+      });
     });
-  });
-});
+  }
+);
 
 const laravelDirs = [
   "/app/Http/Controllers",
