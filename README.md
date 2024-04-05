@@ -51,6 +51,10 @@ Need to go to a Controller and wanna use the command palette. Ok, so you type yo
 
 Currently opens:
 
+- Views (For blade, Vue, React and livewire)
+- Components
+- Livewire components
+- Layouts (Vue/React)
 - Controllers
 - Middlewares
 - Providers
