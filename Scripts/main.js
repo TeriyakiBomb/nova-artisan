@@ -343,18 +343,17 @@ laravelDirs.forEach((dir) => {
   });
 });
 
-const resourceDirs = [
-  [
-    "inertia",
+const resourceDirs = {
+  inertia: [
     "/resources/js/Pages/",
     "/resources/js/Components/",
     "/resources/js/Layouts/",
   ],
-  ["livewire", "/resources/views/livewire/", "/app/Livewire/"],
-  ["blade", "/resources/views/", "/resources/views/components"],
-];
+  livewire: ["/resources/views/livewire/", "/app/Livewire/"],
+  blade: ["/resources/views/", "/resources/views/components"],
+};
 
-function registerCommands(commandType, resourceDirs) {
+function registerBrowseCommands(commandType, directories) {
   const capitalizeFirstLetter = (str) =>
     str.charAt(0).toUpperCase() + str.slice(1);
 
@@ -428,7 +427,7 @@ function registerCommands(commandType, resourceDirs) {
     });
   };
 
-  resourceDirs.forEach((directory) => {
+  directories.forEach((directory) => {
     const directoryName = getFormattedDirectoryName(directory, commandType);
     const commandBaseName = capitalizeFirstLetter(commandType);
     const openCommandName = createCommandName(
@@ -454,8 +453,8 @@ function registerCommands(commandType, resourceDirs) {
   });
 }
 
-resourceDirs.forEach(([commandType, ...subDirectories]) => {
-  registerCommands(commandType, subDirectories);
+Object.entries(resourceDirs).forEach(([commandType, subDirectories]) => {
+  registerBrowseCommands(commandType, subDirectories);
 });
 
 nova.commands.register("laravel-artisan.publishAllConfigs", (options) => {
