@@ -80,7 +80,6 @@
         "title": "Create notifications migration",
         "command": "laravel-artisan.notificationsTable"
       },
-
       {
         "title": "Create cast",
         "command": "laravel-artisan.makeCast"
@@ -282,7 +281,23 @@
   "config": [
     {
       "key": "laravel-artisan.silence.notifications",
-      "title": "Mute success messages",
+      "title": "Mute notifications",
+      "description": "Not recommended, but you do you.",
+      "type": "boolean",
+      "default": false
+    },
+    {
+      "key": "laravel-artisan.shell.path",
+      "title": "Shell",
+      "description": "Full path to your preferred shell",
+      "type": "string",
+      "default": "/bin/sh"
+    }
+  ],
+  "config-workspace": [
+    {
+      "key": "laravel-artisan.silence.notifications",
+      "title": "Mute notifications",
       "description": "Not recommended, but you do you.",
       "type": "boolean",
       "default": false
