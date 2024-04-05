@@ -65,6 +65,13 @@ Currently opens:
 
 I recommend mapping these to keyboard shortcuts to navigate your Laravel project even faster.
 
+**Navigating views, components and layouts**
+
+Since these directories have subdirectories, there are two methods for navigating them `Open` and `Browse`
+
+`Open` will return a list of all files for quick filtering
+`Browse` returns files in the root of the directory and lists subdirectories that you manually navigate into.
+
 ### Configuration
 
 <!--
